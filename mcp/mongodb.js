@@ -1,6 +1,7 @@
 import { MCPAdapter } from "@langchain/mcp-adapters";
 
 // Tools the agent must NOT see
+// Tools the agent must NOT see
 const DISABLED_TOOLS = [
   "connect",
   "disconnect",
@@ -9,6 +10,13 @@ const DISABLED_TOOLS = [
   "list-knowledge-sources", // MongoDB docs search, not our data
   "mongodb-logs", // server internals
   "export", // writes export files to disk
+  // not needed to answer questions, and costly in tokens
+  "explain", // ~3,000 tokens of schema; query-plan analysis
+  "aggregate-db", // database-level pipelines; aggregate covers us
+  "db-stats",
+  "collection-storage-size",
+  "collection-indexes",
+  "list-databases", // we always use sample_mflix
 ];
 
 const adapter = new MCPAdapter({
